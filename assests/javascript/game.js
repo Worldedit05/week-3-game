@@ -1,9 +1,17 @@
 // Choose a random word from the list and provide blank spaces
 
-var game = {
+var setup = {
 	words: ['halo','destiny','league of legends','hearthstone','overwatch'],
 
-	chooseWord: function(answerWord){
+	chooseWord:function(){
+
+		var answerWord = setup.words[Math.floor(Math.random()*setup.words.length)];
+
+		return answerWord;
+
+	},
+
+	blankWord: function(answerWord){
 
 		var blankCharacter = "";
 
@@ -39,7 +47,7 @@ var game = {
 			}
 			else{
 				
-				var shown = game.setChar(shown, checkLetter, letter);
+				var shown = setup.setChar(shown, checkLetter, letter);
 
 			}
 
@@ -52,11 +60,15 @@ var game = {
 	}
 }
 
-var answerWord = game.words[Math.floor(Math.random()*game.words.length)];
+var answerWord = setup.chooseWord();
 
-var currentWord = game.chooseWord(answerWord);
+var currentWord = setup.blankWord(answerWord);
 
-var numGuesses = answerWord.length + 3;
+var numGuesses = answerWord.length;
+
+var letterList = "";
+
+var wins = 0;
 
 console.log(answerWord);
 
@@ -64,27 +76,59 @@ console.log(answerWord);
 
 document.onkeyup = function(event){
 
-	var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
+		var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
 
-	console.log("Number of guesses: " + numGuesses)
+		// Add letter to the list
 
-	if( answerWord.indexOf(userGuess) >= 0 ){
+		if ( currentWord.indexOf(userGuess) != -1 ){
 
-		var newWord = game.guessLetter(userGuess, currentWord, answerWord);
+			console.log("You've already guessed this letter")
 
-	}
-	else{
+		}
 
-		var newWord = currentWord;
+		else {
 
-		console.log("Letter did not match");
+			letterList += userGuess;
 
-	}
+			console.log("Letter List " + letterList);
 
-	numGuesses = numGuesses - 1;
+			if( numGuesses >= 1 ){
 
-	currentWord = newWord;
+				if( answerWord.indexOf(userGuess) >= 0 ){
 
-	console.log(currentWord);
+					var newWord = setup.guessLetter(userGuess, currentWord, answerWord);
+
+				}
+				else{
+
+					var newWord = currentWord;
+
+					numGuesses = numGuesses - 1;
+
+					console.log("Letter did not match");
+
+					console.log("Number of guesses remaining: " + numGuesses);
+
+				}
+
+				currentWord = newWord;
+
+				console.log(currentWord);
+			}
+
+			if ( numGuesses == 0){
+
+				console.log("Lose");
+
+			}
+
+			if ( currentWord == answerWord ){
+
+				wins++;
+
+				console.log("Win! " + wins);
+			}
+		}
+	
 }
 
