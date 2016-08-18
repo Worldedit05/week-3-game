@@ -16,9 +16,9 @@ var setup = {
 		var blankCharacter = "";
 
 		for (var i = 0; i < answerWord.length; i++) {
-			
-			var blankCharacter = blankCharacter.concat("_");
 
+				blankCharacter = blankCharacter.concat("_");
+			
 		}
 		console.log(blankCharacter);
 
@@ -27,9 +27,9 @@ var setup = {
 
 	setChar: function( currentWord, x, y ){
 
-		var repWord = currentWord.substr(0, x) + y + currentWord.substr(x + 1, currentWord.length);
+		var currentWord = currentWord.substr(0, x) + y + currentWord.substr(x + 1, currentWord.length);
 
-		return repWord;
+		return currentWord;
 	},
 
 	guessLetter: function( letter, shown, answer ){
@@ -57,20 +57,36 @@ var setup = {
 
 		return shown;
 
+	},
+
+	gameStart: function(){
+
+		answerWord = setup.chooseWord();
+
+		currentWord = setup.blankWord(answerWord);
+
+		numGuesses = answerWord.length;
+
+		letterList = "";
+
+		console.log(answerWord);
+
+		return answerWord, currentWord, numGuesses, letterList;
+
 	}
 }
 
-var answerWord = setup.chooseWord();
+// var answerWord = setup.chooseWord();
 
-var currentWord = setup.blankWord(answerWord);
+// var currentWord = setup.blankWord(answerWord);
 
-var numGuesses = answerWord.length;
+// var numGuesses = answerWord.length;
 
-var letterList = "";
+// var letterList = "";
 
 var wins = 0;
 
-console.log(answerWord);
+setup.gameStart();
 
 // Listen for the user's guess
 
@@ -86,7 +102,7 @@ document.onkeyup = function(event){
 
 		}
 
-		else {
+		else if ( letterList.indexOf(userGuess) == -1 ) {
 
 			letterList += userGuess;
 
@@ -120,6 +136,8 @@ document.onkeyup = function(event){
 
 				console.log("Lose");
 
+				setup.gameStart();
+
 			}
 
 			if ( currentWord == answerWord ){
@@ -127,7 +145,15 @@ document.onkeyup = function(event){
 				wins++;
 
 				console.log("Win! " + wins);
+
+				setup.gameStart();
 			}
+		}
+
+		else {
+
+			console.log("This letter already appears in the letter list")
+
 		}
 	
 }
