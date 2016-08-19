@@ -1,160 +1,172 @@
 // Choose a random word from the list and provide blank spaces
 
 var setup = {
-	words: ['halo','destiny','league of legends','hearthstone','overwatch'],
+    words: ['halo', 'destiny', 'league of legends', 'hearthstone', 'overwatch'],
+    message: {
+        win: 'You win!',
+        lose: 'Game Over. Press any key to restart!',
+        warning: 'You have already guessed this letter'
+    },
 
-	chooseWord:function(){
+    chooseWord: function() {
 
-		var answerWord = setup.words[Math.floor(Math.random()*setup.words.length)];
+        var answerWord = setup.words[Math.floor(Math.random() * setup.words.length)];
 
-		return answerWord;
+        return answerWord;
 
-	},
+    },
 
-	blankWord: function(answerWord){
+    blankWord: function(answerWord) {
 
-		var blankCharacter = "";
+        var blankCharacter = "";
 
-		for (var i = 0; i < answerWord.length; i++) {
+        for (var i = 0; i < answerWord.length; i++) {
 
-				blankCharacter = blankCharacter.concat("_");
-			
-		}
-		console.log(blankCharacter);
+            blankCharacter = blankCharacter.concat("_");
 
-		return blankCharacter;
-	},
+        }
 
-	setChar: function( currentWord, x, y ){
+        console.log(blankCharacter);
 
-		var currentWord = currentWord.substr(0, x) + y + currentWord.substr(x + 1, currentWord.length);
+        return blankCharacter;
+    },
 
-		return currentWord;
-	},
+    setChar: function(currentWord, x, y) {
 
-	guessLetter: function( letter, shown, answer ){
+        var currentWord = currentWord.substr(0, x) + y + currentWord.substr(x + 1, currentWord.length);
 
-		var checkLetter = -1;
+        return currentWord;
+    },
 
-		checkLetter = answer.indexOf(letter);
+    guessLetter: function(letter, shown, answer) {
 
-		for (i = 0; i < answer.length; i++) {
-		
-			if (checkLetter == -1){
+        var checkLetter = -1;
 
-				return shown;
+        checkLetter = answer.indexOf(letter);
 
-			}
-			else{
-				
-				var shown = setup.setChar(shown, checkLetter, letter);
+        for (i = 0; i < answer.length; i++) {
 
-			}
+            if (checkLetter == -1) {
 
-			checkLetter = answer.indexOf(letter, checkLetter + 1);
+                return shown;
 
-		}
+            } else {
 
-		return shown;
+                var shown = setup.setChar(shown, checkLetter, letter);
 
-	},
+            }
 
-	gameStart: function(){
+            checkLetter = answer.indexOf(letter, checkLetter + 1);
 
-		answerWord = setup.chooseWord();
+        }
 
-		currentWord = setup.blankWord(answerWord);
+        return shown;
 
-		numGuesses = answerWord.length;
+    },
 
-		letterList = "";
+    gameStart: function() {
 
-		console.log(answerWord);
+        answerWord = setup.chooseWord();
 
-		return answerWord, currentWord, numGuesses, letterList;
+        currentWord = setup.blankWord(answerWord);
 
-	}
+        numGuesses = answerWord.length;
+
+        letterList = "";
+
+        console.log(answerWord);
+
+        return answerWord, currentWord, numGuesses, letterList;
+
+    }
 }
-
-// var answerWord = setup.chooseWord();
-
-// var currentWord = setup.blankWord(answerWord);
-
-// var numGuesses = answerWord.length;
-
-// var letterList = "";
-
-var wins = 0;
-
-setup.gameStart();
 
 // Listen for the user's guess
 
-document.onkeyup = function(event){
+document.onkeyup = function(event) {
 
-		var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
+    var win = 0;
 
-		// Add letter to the list
+    setup.gameStart();
 
-		if ( currentWord.indexOf(userGuess) != -1 ){
+    document.getElementById("intro").innerHTML = "";
 
-			console.log("You've already guessed this letter")
+    document.getElementById("warning").innerHTML = "";
 
-		}
+    document.getElementById("letters").innerHTML = currentWord;
 
-		else if ( letterList.indexOf(userGuess) == -1 ) {
+    document.onkeyup = function(event) {
 
-			letterList += userGuess;
+        var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
 
-			console.log("Letter List " + letterList);
+        // Clear the intro & warning messages
 
-			if( numGuesses >= 1 ){
+        // Add letter to the list
 
-				if( answerWord.indexOf(userGuess) >= 0 ){
+        if (currentWord.indexOf(userGuess) != -1) {
 
-					var newWord = setup.guessLetter(userGuess, currentWord, answerWord);
+            document.getElementById("warning").innerHTML = setup.message.warning;
 
-				}
-				else{
+            console.log("You've already guessed this letter")
 
-					var newWord = currentWord;
+        } else if (letterList.indexOf(userGuess) == -1) {
 
-					numGuesses = numGuesses - 1;
+            letterList += userGuess + ",";
 
-					console.log("Letter did not match");
+            document.getElementById("letterList").innerHTML = "Previously guessed letters: " + letterList;
 
-					console.log("Number of guesses remaining: " + numGuesses);
+            console.log("Letter List " + letterList);
 
-				}
+            if (numGuesses >= 1) {
 
-				currentWord = newWord;
+                if (answerWord.indexOf(userGuess) >= 0) {
 
-				console.log(currentWord);
-			}
+                    currentWord = setup.guessLetter(userGuess, currentWord, answerWord);
 
-			if ( numGuesses == 0){
+                } else {
 
-				console.log("Lose");
+                    numGuesses = numGuesses - 1;
 
-				setup.gameStart();
+                    document.getElementById("guesses").innerHTML = "Number of guesses remaining: " + numGuesses;
 
-			}
+                    console.log("Letter did not match");
 
-			if ( currentWord == answerWord ){
+                    console.log("Number of guesses remaining: " + numGuesses);
 
-				wins++;
+                }
 
-				console.log("Win! " + wins);
+                document.getElementById("letters").innerHTML = currentWord;
 
-				setup.gameStart();
-			}
-		}
+                console.log(currentWord);
+            }
 
-		else {
+            if (numGuesses == 0) {
 
-			console.log("This letter already appears in the letter list")
+                document.getElementById("warning").innerHTML = setup.message.lose;
 
-		}
-	
+                console.log("Lose");
+
+                setup.gameStart();
+
+            }
+
+            if (currentWord == answerWord) {
+
+                win++;
+
+                document.getElementById("warning").innerHTML = setup.message.win;
+
+                document.getElementById("wins").innerHTML = "Wins: " + win;
+
+                console.log("Win! " + wins);
+
+                setup.gameStart();
+
+            }
+        } else {
+
+            document.getElementById("warning").innerHTML = setup.message.warning;
+
+        }
+    }
 }
-
