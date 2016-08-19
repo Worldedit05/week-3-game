@@ -78,6 +78,16 @@ var setup = {
 
         return answerWord, currentWord, numGuesses, letterList;
 
+    },
+
+    resetGame: function() {
+
+        setup.gameStart();
+
+        document.getElementById("letters").innerHTML = currentWord;
+
+        document.getElementById("letterList").innerHTML = "Previously guessed letters: ";
+
     }
 }
 
@@ -91,8 +101,6 @@ document.onkeyup = function(event) {
 
     document.getElementById("intro").innerHTML = "";
 
-    document.getElementById("warning").innerHTML = "";
-
     document.getElementById("letters").innerHTML = currentWord;
 
     document.onkeyup = function(event) {
@@ -100,6 +108,8 @@ document.onkeyup = function(event) {
         var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
 
         // Clear the intro & warning messages
+
+        document.getElementById("warning").innerHTML = "";
 
         // Add letter to the list
 
@@ -146,7 +156,7 @@ document.onkeyup = function(event) {
 
                 console.log("Lose");
 
-                setup.gameStart();
+                setup.resetGame();
 
             }
 
@@ -160,7 +170,8 @@ document.onkeyup = function(event) {
 
                 console.log("Win! " + wins);
 
-                setup.gameStart();
+                setup.resetGame();
+
 
             }
         } else {
