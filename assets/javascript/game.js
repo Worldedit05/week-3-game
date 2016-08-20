@@ -1,7 +1,7 @@
 // Choose a random word from the list and provide blank spaces
 
 var setup = {
-    words: ['halo', 'destiny', 'masterchief', 'warthog', 'banshee', 'forerunners', 'cortona', 'spartians', 'oni'],
+    words: ['halo', 'destiny', 'masterchief', 'warthog', 'banshee', 'forerunners', 'cortona', 'spartans', 'oni'],
     message: {
         win: 'You win! Press any key to restart!',
         lose: 'Game Over. Press any key to restart!',
