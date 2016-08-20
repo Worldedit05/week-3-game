@@ -1,11 +1,11 @@
 // Choose a random word from the list and provide blank spaces
 
 var setup = {
-    words: ['halo', 'destiny', 'league of legends', 'hearthstone', 'overwatch'],
+    words: ['halo', 'destiny', 'masterchief', 'warthog', 'banshee', 'forerunners', 'cortona', 'spartians', 'oni'],
     message: {
-        win: 'You win!',
+        win: 'You win! Press any key to restart!',
         lose: 'Game Over. Press any key to restart!',
-        warning: 'You have already guessed this letter'
+        warning: 'You have already guessed the letter: '
     },
 
     chooseWord: function() {
@@ -13,7 +13,6 @@ var setup = {
         var answerWord = setup.words[Math.floor(Math.random() * setup.words.length)];
 
         return answerWord;
-
     },
 
     blankWord: function(answerWord) {
@@ -53,15 +52,12 @@ var setup = {
             } else {
 
                 var shown = setup.setChar(shown, checkLetter, letter);
-
             }
 
             checkLetter = answer.indexOf(letter, checkLetter + 1);
-
         }
 
         return shown;
-
     },
 
     gameStart: function() {
@@ -77,7 +73,6 @@ var setup = {
         console.log(answerWord);
 
         return answerWord, currentWord, numGuesses, letterList;
-
     },
 
     resetGame: function() {
@@ -87,11 +82,8 @@ var setup = {
         document.getElementById("letters").innerHTML = currentWord;
 
         document.getElementById("letterList").innerHTML = "Previously guessed letters: ";
-
     }
 }
-
-// Listen for the user's guess
 
 document.onkeyup = function(event) {
 
@@ -105,19 +97,30 @@ document.onkeyup = function(event) {
 
     document.onkeyup = function(event) {
 
-        var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
+        //Check to see if the game has been won or lost and if so reset the word
 
-        // Clear the intro & warning messages
+        if (currentWord == answerWord || numGuesses == 0) {
+
+            setup.resetGame();
+        }
+
+        // Clear any intro & warning messages for the current game
 
         document.getElementById("warning").innerHTML = "";
 
-        // Add letter to the list
+        // Listen for the user's guess
+
+        var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
+
+        // Check to see if the input has already been guessed
 
         if (currentWord.indexOf(userGuess) != -1) {
 
-            document.getElementById("warning").innerHTML = setup.message.warning;
+            document.getElementById("warning").innerHTML = setup.message.warning + "'" + userGuess + "'";
 
-            console.log("You've already guessed this letter")
+            console.log("You've already guessed letter")
+
+            // Add letter to the list
 
         } else if (letterList.indexOf(userGuess) == -1) {
 
@@ -126,6 +129,8 @@ document.onkeyup = function(event) {
             document.getElementById("letterList").innerHTML = "Previously guessed letters: " + letterList;
 
             console.log("Letter List " + letterList);
+
+            //Make sure that there are guesses available
 
             if (numGuesses >= 1) {
 
@@ -142,7 +147,6 @@ document.onkeyup = function(event) {
                     console.log("Letter did not match");
 
                     console.log("Number of guesses remaining: " + numGuesses);
-
                 }
 
                 document.getElementById("letters").innerHTML = currentWord;
@@ -150,34 +154,33 @@ document.onkeyup = function(event) {
                 console.log(currentWord);
             }
 
+            //Game is lost
+
             if (numGuesses == 0) {
 
                 document.getElementById("warning").innerHTML = setup.message.lose;
 
                 console.log("Lose");
-
-                setup.resetGame();
-
             }
+
+            //Win condition
 
             if (currentWord == answerWord) {
 
                 win++;
+
+                document.getElementById("letters").innerHTML = currentWord;
 
                 document.getElementById("warning").innerHTML = setup.message.win;
 
                 document.getElementById("wins").innerHTML = "Wins: " + win;
 
                 console.log("Win! " + wins);
-
-                setup.resetGame();
-
-
             }
+
         } else {
 
-            document.getElementById("warning").innerHTML = setup.message.warning;
-
+            document.getElementById("warning").innerHTML = setup.message.warning + "'" + userGuess + "'";
         }
     }
 }

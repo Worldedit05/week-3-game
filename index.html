@@ -3,21 +3,41 @@
 
 <head>
     <title>Hangman Game</title>
-    <link rel="stylesheet" type="text/css" href="assests/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="assests/css/style.css">
-    <script src="assests/javascript/game.js" type="text/javascript" charset="utf-8" async defer></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="assets/javascript/game.js" type="text/javascript" charset="utf-8" async defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
     <header>
-        <h1>Overwatch Hangman</h1></header>
-    <div>
-        <h1 id="intro">Press any key to start!</h1></div>
-    <div id="letters"></div>
-    <h1 id="warning"></h1>
-    <div id="guesses"></div>
-    <div id="letterList"></div>
-    <div id="wins"></div>
+    </header>
+    <div class="container">
+    	<img src="assets/images/halo-background.png" alt="" id="bg-image" width="500px" height="800px">
+    	<div class="main-panel">	
+		    <div class="panel-header">	
+		        <div>
+		            <img src="assets/images/halo-logo.png" alt="Halo logo" id="logo" width="300px" height="45px">
+		            <h1 class="game-text" id="header">Hangman</h1>
+		        </div>
+		    </div>
+		    <div class="panel">
+		    	<div>
+		    		<h1 class="game-text" id="intro">Press any key to start!</h1>
+		    	</div>
+		        <div class="game-text" id="letters">
+		        </div>
+		    </div>
+		    <div class="panel game-text stats">
+		        <div id="letterList"></div>
+		        <div id="guesses"></div>
+		        <div id="wins"></div>
+		    </div>
+		    <div class="panel game-text">
+		        	<h1 id="warning"></h1>
+		    </div>	        
+    	</div>
+    </div>
 </body>
 
 </html>
