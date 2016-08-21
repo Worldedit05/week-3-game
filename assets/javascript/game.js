@@ -1,7 +1,7 @@
 // Choose a random word from the list and provide blank spaces
 
 var setup = {
-    words: ['halo', 'destiny', 'masterchief', 'warthog', 'banshee', 'forerunners', 'cortona', 'spartans', 'oni'],
+    words: ['halo', 'destiny', 'masterchief', 'warthog', 'banshee', 'forerunners', 'cortana', 'spartans', 'oni'],
     message: {
         win: 'You win! Press any key to restart!',
         lose: 'Game Over. Press any key to restart!',
@@ -82,6 +82,8 @@ var setup = {
         document.getElementById("letters").innerHTML = currentWord;
 
         document.getElementById("letterList").innerHTML = "Previously guessed letters: ";
+
+        document.getElementById("guesses").innerHTML = "Number of guesses remaining: " + numGuesses;
     }
 }
 
@@ -102,7 +104,7 @@ document.onkeyup = function(event) {
         if (currentWord == answerWord || numGuesses == 0) {
 
             setup.resetGame();
-        }
+        }else {
 
         // Clear any intro & warning messages for the current game
 
@@ -183,4 +185,5 @@ document.onkeyup = function(event) {
             document.getElementById("warning").innerHTML = setup.message.warning + "'" + userGuess + "'";
         }
     }
+}
 }
